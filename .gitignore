@@ -1,3 +1,5 @@
 target/
 .bsp/
 .ipynb_checkpoints/
+~$ToDo.xlsx
+__pycache__/

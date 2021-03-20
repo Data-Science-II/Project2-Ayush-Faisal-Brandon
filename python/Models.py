@@ -9,7 +9,7 @@ from sklearn.model_selection import KFold
 
 class Perceptron():
     
-    def __init__(self, data, response, eta = 0.05): 
+    def __init__(self, data, response, eta = 0.05, build_fn = None): 
         """
         Builds a perceptron from numpy arrays of x variables and a response. 
         
@@ -21,10 +21,24 @@ class Perceptron():
         self.y = response
         self.k = self.x.shape[1] - 1
         self.n = self.x.shape[0]
-        self.model = Perceptron.build_model(self.x, self.y, eta)
+        if build_fn is None:
+            self.model = Perceptron.build_model(self.x, self.y, eta)
+            self.build_fn = Perceptron.build_model
+        else: 
+            self.model = build_fn(self.x, self.y)
+            self.build_fn = build_fn
         
     def build_model(x, y, suppress = False, eta = 0.05):
-        """Builds a perceptron given the input matrix and response variable."""
+        """Builds a perceptron given the input matrix and response variable.
+        
+        Keyword Arguments:
+        x - the intial data that must be passed into the model. The model layers 
+        must be built from the dimensions of x, or the variable selection functions 
+        will not work. 
+        y - the response vector 
+        suppress - whether or not to print the model architecture after building the model
+        eta - the learning rate for the model 
+        """
         model = keras.Sequential()
         model.add(layers.Dense(1, input_dim = x.shape[1], kernel_initializer = "normal", activation = "sigmoid", use_bias=False))
 
@@ -36,13 +50,13 @@ class Perceptron():
         return model
 
     def forward_selection(self, iter = 1000): 
-        return VariableSelection.forward_selection(self.x, self.y, Perceptron.build_model, iter)
+        return VariableSelection.forward_selection(self.x, self.y, self.build_fn, iter)
 
     def backward_elimination(self, iter = 1000): 
-        return VariableSelection.backward_elimination(self.x, self.y, Perceptron.build_model, iter)
+        return VariableSelection.backward_elimination(self.x, self.y, self.build_fn, iter)
 
     def stepwise_regression(self, iter = 1000): 
-        return VariableSelection.stepwise_regression(self.x, self.y, Perceptron.build_model, iter)
+        return VariableSelection.stepwise_regression(self.x, self.y, self.build_fn, iter)
     
     def train(self, epochs = 20): 
         """Fits the model over a predetermined number of epochs."""
@@ -106,7 +120,7 @@ class metrics():
         aic = n*np.log(mse) + 2*k
         return aic
     
-    def rsq_cv(model, x, y, folds = 10):
+    def rsq_cv(model, x, y, folds = 10, epochs = 500):
         """
         Peforms k-fold cross-validation and returns the average Rsq on the testing samples. 
         
@@ -116,13 +130,13 @@ class metrics():
         kfold = KFold(n_splits = folds, shuffle = True)
         rsq_cv = 0
         for train, test in kfold.split(x, y): 
-            model.fit(x[train], y[train], epochs = 500, batch_size = 20, verbose = 0)
+            model.fit(x[train], y[train], epochs = epochs, batch_size = 20, verbose = 0)
             rsq_cv = rsq_cv + metrics.rsq(model, x[test], y[test])
             
         return rsq_cv/folds 
 
 class NeuralNet3L (Perceptron):
-    def __init__(self, data, response): 
+    def __init__(self, data, response, build_fn = None): 
         """
         Builds a 3 Layer Nueral Network based on the input data. 
         
@@ -135,7 +149,12 @@ class NeuralNet3L (Perceptron):
         self.y = response
         self.k = self.x.shape[1] - 1
         self.n = self.x.shape[0]
-        self.model = NeuralNet3L.build_model(self.x, self.y)
+        if build_fn is None:
+            self.model = NeuralNet3L.build_model(self.x, self.y)
+            self.build_fn = NeuralNet3L.build_model
+        else: 
+            self.model = build_fn(self.x, self.y)
+            self.build_fn = build_fn
     
     def build_model(x, y, suppress = False, width = 0): 
         k = x.shape[1] - 1
@@ -156,21 +175,21 @@ class NeuralNet3L (Perceptron):
     
     def forward_selection(self, iter = 200): 
         return VariableSelection.forward_selection(self.x, self.y, 
-                                                NeuralNet3L.build_model,
+                                                self.build_fn,
                                                 iter)
     
     def backward_elimination(self, iter = 200):
         return VariableSelection.backward_elimination(self.x, self.y, 
-                                                NeuralNet3L.build_model,
+                                                self.build_fn,
                                                 iter)
     
     def stepwise_regression(self, iter = 200): 
         return VariableSelection.stepwise_regression(self.x, self.y, 
-                                                NeuralNet3L.build_model,
+                                                self.build_fn,
                                                 iter)
 
 class NeuralNet4L (Perceptron):
-    def __init__(self, data, response): 
+    def __init__(self, data, response, build_fn = None): 
         """
         Builds a 3 Layer Nueral Network based on the input data. 
         
@@ -183,7 +202,12 @@ class NeuralNet4L (Perceptron):
         self.y = response
         self.k = self.x.shape[1] - 1
         self.n = self.x.shape[0]
-        self.model = NeuralNet4L.build_model(self.x, self.y)
+        if build_fn is None:
+            self.model = NeuralNet4L.build_model(self.x, self.y)
+            self.build_fn = NeuralNet4L.build_model
+        else: 
+            self.model = build_fn(self.x, self.y)
+            self.build_fn = build_fn
     
     def build_model(x, y, suppress = False, width1 = 0, width2 = 0): 
         k = x.shape[1] - 1
@@ -210,17 +234,17 @@ class NeuralNet4L (Perceptron):
     
     def forward_selection(self, iter = 200): 
         return VariableSelection.forward_selection(self.x, self.y, 
-                                                NeuralNet4L.build_model,
+                                                self.build_fn,
                                                 iter)
     
     def backward_elimination(self, iter = 200):
         return VariableSelection.backward_elimination(self.x, self.y, 
-                                                NeuralNet4L.build_model,
+                                                self.build_fn,
                                                 iter)
     
     def stepwise_regression(self, iter = 200): 
         return VariableSelection.stepwise_regression(self.x, self.y, 
-                                                    NeuralNet4L.build_model,
+                                                    self.build_fn,
                                                     iter)
 
 class VariableSelection(): 

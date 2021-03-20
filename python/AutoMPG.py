@@ -18,19 +18,19 @@ y = auto[auto.columns[0]].to_numpy()
 y = y/lalg.norm(y)
 
 ###Perceptron 
-auto_perceptron = Perceptron(ox, y, 0.1)
+auto_perceptron = Perceptron(ox, y, 0.1, build_fn = Perceptron.build_model)
 print(auto_perceptron.forward_selection(5000))
 print(auto_perceptron.backward_elimination(5000))
 print(auto_perceptron.stepwise_regression(5000))
 
 ###3LayerNetwork 
-auto_3L = NeuralNet3L(ox, y)
+auto_3L = NeuralNet3L(ox, y, build_fn = NeuralNet3L.build_model)
 print(auto_3L.forward_selection())
 print(auto_3L.backward_elimination())
 print(auto_3L.stepwise_regression())
 
 ###4LayerNetwork 
-auto_4L = NeuralNet4L(ox, y)
+auto_4L = NeuralNet4L(ox, y, build_fn = NeuralNet4L.build_model)
 print(auto_4L.forward_selection())
 print(auto_4L.backward_elimination())
 print(auto_4L.stepwise_regression())

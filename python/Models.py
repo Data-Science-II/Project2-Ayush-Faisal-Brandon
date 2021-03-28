@@ -404,7 +404,7 @@ class VariableSelection():
                 aic.append(metrics.aic(bestElimModel, subsetX, y))
                 rsq_cv.append(metrics.rsq_cv(bestElimModel, subsetX, y))
                 
-                toBeat = bestAdjRsq
+                toBeat = bestElimAdjRsq
                 
             if (bestAddAdjRsq > bestElimAdjRsq and bestAddAdjRsq >= toBeat): 
                 toBeIncluded.append(bestVar)

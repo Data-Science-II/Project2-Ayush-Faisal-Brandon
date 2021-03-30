@@ -12,17 +12,17 @@ import scalation.linalgebra.{MatriD, MatrixD, VectoD, VectorD}
 import scalation.plot.{PlotM, Plot}
 import scalation.util.banner
 
-object GasEmissions extends App {
+object SeoulBike extends App {
 
-    val emissions = Relation.apply("data/emissions.csv", "emissions", 
+    val bike = Relation.apply("data/bike.csv", "bike", 
                                 domain=null, key = 0, eSep = ",", cPos = null)
-    emissions.show(5)
+    bike.show(5)
 
-    val (x,y) = emissions.toMatriDD(0 to 9, 10)
+    val (x,y) = bike.toMatriDD(0 to 9, 10)
     val ox = new MatrixD(x.dim1, 1, 1.0) ++^ x // x augmented with vector of ones
     val normX = new MatrixD(ox.normalizeU()) //normalizing features 
     val normY: VectoD = VectorD(y.normalize()) //normalizing response
-    val matY: MatrixD = new MatrixD(emissions.toMatriD(Seq(0))) //NormY as matrix
+    val matY: MatrixD = new MatrixD(bike.toMatriD(Seq(0))) //NormY as matrix
     val matNormY: MatrixD = new MatrixD(matY.normalizeU())
 
     val trg = new TranRegression(ox, y)

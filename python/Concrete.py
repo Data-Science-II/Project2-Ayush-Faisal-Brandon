@@ -128,12 +128,12 @@ print(f"Rsq = {rsq} Rsq_cv = {rsq_cv}")
 # Plots    
 plot_and_save(forward_pcp, "ConcreteForwardPCP.png")
 plot_and_save(backward_pcp, "ConcreteBackWardPCP.png")
-plot_and_save(step_pcp, "ConcreteStepwisePCP.png")
+plot_and_save(stepwise_pcp, "ConcreteStepwisePCP.png")
 
 plot_and_save(forward_3L, "ConcreteForward3L.png")
 plot_and_save(backward_3L, "ConcreteBackWard3L.png")
-plot_and_save(step_3L, "ConcreteStepwise3L.png")
+plot_and_save(stepwise_3L, "ConcreteStepwise3L.png")
 
 plot_and_save(forward_4L, "ConcreteForward4L.png")
 plot_and_save(backward_4L, "ConcreteBackWard4L.png")
-plot_and_save(step_4L, "ConcreteStepwise4L.png")
+plot_and_save(stepwise_4L, "ConcreteStepwise4L.png")

@@ -128,12 +128,12 @@ print(f"Rsq = {rsq} Rsq_cv = {rsq_cv}")
 # Plots    
 plot_and_save(forward_pcp, "WineForwardPCP.png")
 plot_and_save(backward_pcp, "WineBackWardPCP.png")
-plot_and_save(step_pcp, "WineStepwisePCP.png")
+plot_and_save(stepwise_pcp, "WineStepwisePCP.png")
 
 plot_and_save(forward_3L, "WineForward3L.png")
 plot_and_save(backward_3L, "WineBackWard3L.png")
-plot_and_save(step_3L, "WineStepwise3L.png")
+plot_and_save(stepwise_3L, "WineStepwise3L.png")
 
 plot_and_save(forward_4L, "WineForward4L.png")
 plot_and_save(backward_4L, "WineBackWard4L.png")
-plot_and_save(step_4L, "WineStepwise4L.png")
+plot_and_save(stepwise_4L, "WineStepwise4L.png")

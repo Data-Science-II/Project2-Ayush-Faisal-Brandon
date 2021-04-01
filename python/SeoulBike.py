@@ -5,9 +5,9 @@
 
 
 import pandas as pd 
-import numpy as np
+import numpy as np 
 import numpy.linalg as lalg
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
@@ -15,18 +15,22 @@ import tensorflow.keras.regularizers as rg
 from sklearn.model_selection import KFold
 from Models import *
 
+#config =  tf.compat.v1.ConfigProto( device_count = {'GPU': 1, 'CPU': 6} )
+#sess = tf.compat.v1.Session(config=config)
+#tf.compat.v1.keras.backend.set_session(sess)
+
 
 # In[2]:
 
 
-auto = pd.read_csv("../data/auto-mpg.csv")
-auto.fillna(auto.mean())
-x = auto[auto.columns[1:7]].to_numpy()
+bike = pd.read_csv("../data/SeoulBikeDataCleaned.csv")
+bike.fillna(bike.mean())
+x = bike[bike.columns[1:15]].to_numpy()
 ox = np.insert(x, 0, 1.0, axis = 1)
-y = auto[auto.columns[0]].to_numpy()
+y = bike[bike.columns[0]].to_numpy()
 
 
-# In[3]:
+# In[ ]:
 
 
 auto_perceptron = Perceptron(ox, y, 0.1, build_fn = Perceptron.build_model)
@@ -35,7 +39,7 @@ backward_pcp = auto_perceptron.backward_elimination(5000)
 step_pcp = auto_perceptron.stepwise_regression(5000)
 
 
-# In[4]:
+# In[ ]:
 
 
 auto_3L = NeuralNet3L(ox, y, build_fn = NeuralNet3L.build_model)
@@ -44,7 +48,7 @@ backward_3L = auto_3L.backward_elimination()
 step_3L = auto_3L.stepwise_regression()
 
 
-# In[5]:
+# In[ ]:
 
 
 auto_4L = NeuralNet4L(ox, y, build_fn = NeuralNet4L.build_model)
@@ -53,11 +57,11 @@ backward_4L = auto_4L.backward_elimination()
 step_4L = auto_4L.stepwise_regression()
 
 
-# In[6]:
+# In[ ]:
 
 
 ridge_perceptron = keras.Sequential()
-ridge_perceptron.add(layers.Dense(1, input_dim = 7, 
+ridge_perceptron.add(layers.Dense(1, input_dim = 15, 
                                  kernel_initializer = "uniform", 
                                  activation = "relu", 
                                  use_bias = False,
@@ -67,7 +71,7 @@ optimizer = keras.optimizers.Adam(learning_rate = 0.0005)
 ridge_perceptron.compile(loss = "mean_squared_error", optimizer = optimizer)
 
 
-# In[7]:
+# In[ ]:
 
 
 ridge_perceptron.fit(ox, y, epochs = 50, batch_size = 10, verbose = 0)
@@ -76,7 +80,7 @@ rsq_cv = metrics.rsq_cv(ridge_perceptron, ox, y, epochs = 50)
 print(f"Rsq = {rsq} Rsq_cv = {rsq_cv}")
 
 
-# In[8]:
+# In[ ]:
 
 
 def plot_and_save(arrays, name, basepath = "../plots/python/"): 

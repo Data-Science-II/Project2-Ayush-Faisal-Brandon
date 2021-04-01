@@ -14,11 +14,11 @@ import scalation.util.banner
 
 object SeoulBike extends App {
 
-    val bike = Relation.apply("data/bike.csv", "bike", 
+    val bike = Relation.apply("data/SeoulBikeDataCleaned.csv", "bike", 
                                 domain=null, key = 0, eSep = ",", cPos = null)
     bike.show(5)
 
-    val (x,y) = bike.toMatriDD(0 to 9, 10)
+    val (x,y) = bike.toMatriDD(1 to 12, 0)
     val ox = new MatrixD(x.dim1, 1, 1.0) ++^ x // x augmented with vector of ones
     val normX = new MatrixD(ox.normalizeU()) //normalizing features 
     val normY: VectoD = VectorD(y.normalize()) //normalizing response
@@ -107,7 +107,7 @@ object SeoulBike extends App {
     * @param regMat the matrix that results from the process 
     * @param path the path to be saved at 
     */
-    def plot_and_save (regMat: MatriD, path: String, basePath: String = "plots/scala/GasEmissions/")  = { 
+    def plot_and_save (regMat: MatriD, path: String, basePath: String = "plots/scala/SeoulBike/")  = { 
         val plot = new PlotM(VectorD.range(0, regMat.dim1), regMat.t, 
             label = Array[String]("R^2", "adj-R^2", "cvR^2"), 
             _title = "Quality of Fit vs. Model Complexity", 

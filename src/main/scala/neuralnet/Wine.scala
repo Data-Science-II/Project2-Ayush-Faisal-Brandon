@@ -15,11 +15,11 @@ import scalation.util.banner
 object Wine extends App {
 
     val wine = Relation.apply("data/winequality-red.csv", "wine", 
-                                domain=null, key = 0, eSep = ",", cPos = null)
+                                domain=null, key = 0, eSep = ":", cPos = null)
     wine.show(5)
 
-    val (x,y) = wine.toMatriDD(0 to 10, 0)
-    val ox = new MatrixD(x.dim1, 11, 1.0) ++^ x // x augmented with vector of ones
+    val (x,y) = wine.toMatriDD(0 to 10, 11)
+    val ox = new MatrixD(x.dim1, 1, 1.0) ++^ x // x augmented with vector of ones
     val normX = new MatrixD(ox.normalizeU()) //normalizing features 
     val normY: VectoD = VectorD(y.normalize()) //normalizing response
     val matY: MatrixD = new MatrixD(wine.toMatriD(Seq(0))) //NormY as matrix
@@ -38,7 +38,7 @@ object Wine extends App {
     
     //Perceptron Model
     val perceptronHP = new HyperParameter()
-    perceptronHP += ("eta", 0.05, 0.1) //optimal eta 
+    perceptronHP += ("eta", 0.0005, 0.1) //optimal eta 
     perceptronHP += ("bSize", 100, 20)
     perceptronHP += ("maxEpochs", 10000, 100)
 
@@ -63,7 +63,7 @@ object Wine extends App {
     
     
     val nn3LHparam = new HyperParameter()
-    nn3LHparam += ("eta", 0.075, 0.1)
+    nn3LHparam += ("eta", 0.0005, 0.1)
     nn3LHparam += ("bSize", 20, 20)  
     nn3LHparam += ("lambda", 0, 0)
     nn3LHparam += ("maxEpochs", 1000, 1000)

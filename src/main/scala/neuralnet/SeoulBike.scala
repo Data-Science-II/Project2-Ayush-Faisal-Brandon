@@ -18,7 +18,7 @@ object SeoulBike extends App {
                                 domain=null, key = 0, eSep = ",", cPos = null)
     bike.show(5)
 
-    val (x,y) = bike.toMatriDD(1 to 12, 0)
+    val (x,y) = bike.toMatriDD(1 to 14, 0)
     val ox = new MatrixD(x.dim1, 1, 1.0) ++^ x // x augmented with vector of ones
     val normX = new MatrixD(ox.normalizeU()) //normalizing features 
     val normY: VectoD = VectorD(y.normalize()) //normalizing response
@@ -30,16 +30,16 @@ object SeoulBike extends App {
     println(trg.analyze().summary)
     var (_, trgForwards) = trg.forwardSelAll()
     var (_, trgBackwards) = trg.backwardElimAll()
-    var (_, trgStep) = trg.stepRegressionAll()
+    //var (_, trgStep) = trg.stepRegressionAll()
 
     plot_and_save(trgForwards, "ForwardTranReg.png")
     plot_and_save(trgBackwards, "BackwardTranReg.png")
-    plot_and_save(trgStep, "StepTranReg.png")
+    //plot_and_save(trgStep, "StepTranReg.png")
     
     //Perceptron Model
     val perceptronHP = new HyperParameter()
-    perceptronHP += ("eta", 0.05, 0.1) //optimal eta 
-    perceptronHP += ("bSize", 100, 20)
+    perceptronHP += ("eta", 0.000000005, 0.1) //optimal eta 
+    perceptronHP += ("bSize", 300, 10)
     perceptronHP += ("maxEpochs", 10000, 100)
 
     val perceptron = new Perceptron(normX, normY, hparam = perceptronHP, f0 = f_reLU)

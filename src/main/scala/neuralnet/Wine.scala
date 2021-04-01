@@ -15,7 +15,7 @@ import scalation.util.banner
 object Wine extends App {
 
     val wine = Relation.apply("data/winequality-red.csv", "wine", 
-                                domain=null, key = 0, eSep = ",", cPos = null)
+                                domain=null, key = 0, eSep = ";", cPos = null)
     wine.show(5)
 
     val (x,y) = wine.toMatriDD(0 to 10, 0)

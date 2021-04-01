@@ -5,8 +5,8 @@ import numpy.linalg as lalg
 import matplotlib.pyplot as plt 
 import tensorflow as tf
 from tensorflow import keras
-from keras.regularizers import l1, l2
 from tensorflow.keras import layers
+import tensorflow.keras.regularizers as rg
 from sklearn.model_selection import KFold
 from Models import *
 
@@ -62,40 +62,40 @@ y = y/lalg.norm(y)
 ###Perceptron 
 concrete_perceptron = Perceptron(ox, y, 0.1, build_fn = concrete_pcp_build)
 # Perceptron Forward
-forward_pcp = concrete_perceptron.forward_selection(50)
-print("Perceptron Forward: ", forward_pcp)
+forward_pcp = concrete_perceptron.forward_selection(20)
+#print("Perceptron Forward: ", forward_pcp)
 # Perceptron Backward
-backward_pcp = concrete_perceptron.backward_elimination(50)
-print("Perceptron Backward: ", backward_pcp)
+backward_pcp = concrete_perceptron.backward_elimination(20)
+#print("Perceptron Backward: ", backward_pcp)
 # Perceptron Stepwise
-stepwise_pcp = concrete_perceptron.stepwise_regression(50)
-print("Perceptron Stepwise: ", stepwise_pcp)
+stepwise_pcp = concrete_perceptron.stepwise_regression(20)
+#print("Perceptron Stepwise: ", stepwise_pcp)
 
 
 ###3LayerNetwork 
 concrete_3L = NeuralNet3L(ox, y, build_fn = NeuralNet3L.build_model)
 # 3LayerNN Forward
 forward_3L = concrete_3L.forward_selection()
-print("3LayerNN Forward: ", forward_3L)
+#print("3LayerNN Forward: ", forward_3L)
 # 3LayerNN Backward
 backward_3L = concrete_3L.backward_elimination()
-print("3LayerNN Backward: ", backward_3L)
+#print("3LayerNN Backward: ", backward_3L)
 # 3LayerNN Stepwise
 stepwise_3L = concrete_3L.stepwise_regression()
-print("3LayerNN Stepwise: ", stepwise_3L)
+#print("3LayerNN Stepwise: ", stepwise_3L)
 
 
 ###4LayerNetwork 
 concrete_4L = NeuralNet4L(ox, y, build_fn = NeuralNet4L.build_model)
 # 4LayerNN Forward
 forward_4L = concrete_4L.forward_selection()
-print("4LayerNN Forward: ", forward_4L)
+#print("4LayerNN Forward: ", forward_4L)
 # 4LayerNN Backward
 backward_4L = concrete_4L.backward_elimination()
-print("4LayerNN Backward: ", backward_4L)
+#print("4LayerNN Backward: ", backward_4L)
 # 4LayerNN Stepwise
 stepwise_4L = concrete_4L.stepwise_regression()
-print("4LayerNN Stepwise: ", stepwise_4L)
+#print("4LayerNN Stepwise: ", stepwise_4L)
 
 concrete_perceptron = Perceptron(ox, y, 0.1, build_fn = concrete_pcp_build)
 concrete_3L = NeuralNet3L(ox, y, build_fn = NeuralNet3L.build_model)
@@ -108,10 +108,10 @@ concrete_4L.train(300)
 print_fit(concrete_perceptron)
 print_fit(concrete_3L)
 print_fit(concrete_4L)
-
+"""
 ###Ridge Perceptron 
 ridge_perceptron = keras.Sequential()
-ridge_perceptron.add(layers.Dense(1, input_dim = 7, 
+ridge_perceptron.add(layers.Dense(1, input_dim = 9, 
                                  kernel_initializer = "uniform", 
                                  activation = "relu", 
                                  use_bias = False,
@@ -123,17 +123,17 @@ ridge_perceptron.compile(loss = "mean_squared_error", optimizer = optimizer)
 ridge_perceptron.fit(ox, y, epochs = 50, batch_size = 10, verbose = 0)
 rsq_cv = metrics.rsq_cv(ridge_perceptron, ox, y, epochs = 500)
 print(f"Rsq = {rsq} Rsq_cv = {rsq_cv}")
-
+"""
 
 # Plots    
 plot_and_save(forward_pcp, "ConcreteForwardPCP.png")
-plot_and_save(backward_pcp, "BackWardPCP.png")
-plot_and_save(step_pcp, "StepwisePCP.png")
+plot_and_save(backward_pcp, "ConcreteBackWardPCP.png")
+plot_and_save(step_pcp, "ConcreteStepwisePCP.png")
 
 plot_and_save(forward_3L, "ConcreteForward3L.png")
-plot_and_save(backward_3L, "BackWard3L.png")
-plot_and_save(step_3L, "Stepwise3L.png")
+plot_and_save(backward_3L, "ConcreteBackWard3L.png")
+plot_and_save(step_3L, "ConcreteStepwise3L.png")
 
 plot_and_save(forward_4L, "ConcreteForward4L.png")
-plot_and_save(backward_4L, "BackWard4L.png")
-plot_and_save(step_4L, "Stepwise4L.png")
+plot_and_save(backward_4L, "ConcreteBackWard4L.png")
+plot_and_save(step_4L, "ConcreteStepwise4L.png")

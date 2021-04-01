@@ -25,7 +25,4 @@ D:\CS4360\PROJECT2\SRC
             │   GasEmissions.scala - Brandon
             │   SeoulBike.scala - Brandon
             │   Wine.scala - Faisal
-            │
-            └───project
-                    build.properties
 '''
